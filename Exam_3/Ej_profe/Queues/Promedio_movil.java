@@ -20,15 +20,13 @@ public class Promedio_movil {
 			suma -= queue.poll();
 		}
 
-		return suma / queue.size();
+		return (double) suma / queue.size();
 	}
 
 	public static void main(String[] args) {
 		Promedio_movil pm = new Promedio_movil(3);
-
-		System.out.println(pm.agregar(10));
-		System.out.println(pm.agregar(20));
-		System.out.println(pm.agregar(30));
-		System.out.println(pm.agregar(40));
+		for (int n : new int[] {10, 20, 30, 40}) {
+			System.out.println(pm.agregar(n));
+		}
 	}
 }
