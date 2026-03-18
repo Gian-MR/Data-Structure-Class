@@ -33,12 +33,12 @@ public class Historial {
         System.out.println(pedido);
     }
 
-    void historial(){
-        while(!nombre.isEmpty()){
+    void historial() {
+        for (int i = nombre.size() - 1; i >= 0; i--) {
             String pedido = "";
-            pedido += nombre.pop();
-            pedido += ", " + producto.pop();
-            pedido += ", " + precio.pop();
+            pedido += nombre.get(i);
+            pedido += ", " + producto.get(i);
+            pedido += ", " + precio.get(i);
             System.out.println(pedido);
         }
     }
