@@ -1,4 +1,4 @@
-package Exam_4.HashMaps;
+package Exam_4.Ej_prac.HashMaps;
 
 public class Syntax {
 	/* 
