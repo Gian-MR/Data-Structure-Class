@@ -16,7 +16,13 @@ public class Exercise4_SameValueKeys {
         // 5. Return the list.
 
         //ADD CODE HERE
-        return null;
+        List<String> keysList = new ArrayList<>();
+        for (String key : map.keySet()) {
+            if (map.get(key) == targetValue) {
+                keysList.add(key);
+            }
+        }
+        return keysList;
     }
 
     public static void main(String[] args) {
