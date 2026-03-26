@@ -15,7 +15,12 @@ public class Exercise2_FirstIndexMap {
         // 5. Return the map.
 
         //ADD CODE HERE
-        return null;
+        HashMap<String, Integer> indexMap = new HashMap<>();
+        for (int i = 0; i < words.length; i++) {
+            indexMap.putIfAbsent(words[i], i);
+        }
+        return indexMap;
+
     }
 
     public static void main(String[] args) {
