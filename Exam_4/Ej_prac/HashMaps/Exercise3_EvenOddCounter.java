@@ -15,8 +15,17 @@ public class Exercise3_EvenOddCounter {
         // 6. Return the map.
 
         // ADD CODE HERE
-        return null;
-
+        HashMap<String, Integer> countMap = new HashMap<>();
+        countMap.put("even", 0);
+        countMap.put("odd", 0);
+        for (int num : nums) {
+            if (num % 2 == 0) {
+                countMap.put("even", countMap.get("even") + 1);
+            } else {
+                countMap.put("odd", countMap.get("odd") + 1);
+            }
+        }
+        return countMap;
     }
 
     public static void main(String[] args) {
