@@ -14,7 +14,11 @@ public class Exercise1_WordFrequency {
         // 5. Return the completed map.
 
         //ADD CODE HERE
-        return null; // Change this to return the actual map
+        HashMap<String, Integer> frequencyMap = new HashMap<>();
+        for (String word : words) {
+            frequencyMap.put(word, frequencyMap.getOrDefault(word, 0) + 1);
+        }
+        return frequencyMap;
     }
 
     public static void main(String[] args) {
