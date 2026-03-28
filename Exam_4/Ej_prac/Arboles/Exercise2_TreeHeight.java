@@ -20,7 +20,12 @@ public class Exercise2_TreeHeight {
         // 4. Return 1 + max(leftHeight, rightHeight).
 
         // ADD CODE HERE
-        return 0;
+        if (root == null) {
+            return 0;
+        }
+        int leftHeight = treeHeight(root.left);
+        int rightHeight = treeHeight(root.right);
+        return 1 + Math.max(leftHeight, rightHeight);
     }
 
     public static void main(String[] args) {
