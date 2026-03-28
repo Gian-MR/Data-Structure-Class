@@ -20,7 +20,16 @@ public class Exercise4_SearchBST {
         // 4. Otherwise, search in the right subtree.
 
         // ADD CODE HERE
-        return false;
+        if (root == null) {
+            return false;
+        }
+        if (root.val == target) {
+            return true;
+        } else if (target < root.val) {
+            return searchBST(root.left, target);
+        } else {
+            return searchBST(root.right, target);
+        }
     }
 
     public static void main(String[] args) {
