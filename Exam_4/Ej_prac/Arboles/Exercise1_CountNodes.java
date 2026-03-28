@@ -20,7 +20,12 @@ public class Exercise1_CountNodes {
         // 4. Return 1 + leftCount + rightCount.
 
         // ADD CODE HERE
-        return 0;
+        if (root == null) {
+            return 0;
+        }
+        int leftCount = countNodes(root.left);
+        int rightCount = countNodes(root.right);
+        return 1 + leftCount + rightCount;
     }
 
     public static void main(String[] args) {
