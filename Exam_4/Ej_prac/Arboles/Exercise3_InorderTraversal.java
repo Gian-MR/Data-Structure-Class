@@ -24,7 +24,18 @@ public class Exercise3_InorderTraversal {
         // 5. Return the list.
 
         // ADD CODE HERE
-        return null;
+        List<Integer> result = new ArrayList<>();
+        inorderHelper(root, result);
+        return result;
+    }
+
+    private static void inorderHelper(TreeNode root, List<Integer> result) {
+        if (root == null) {
+            return;
+        }
+        inorderHelper(root.left, result);
+        result.add(root.val);
+        inorderHelper(root.right, result);
     }
 
     public static void main(String[] args) {
