@@ -25,6 +25,8 @@ public class Exercise3_EvenOddCounter {
                 countMap.put("odd", countMap.get("odd") + 1);
             }
         }
+        //* Another way to update a counter:
+        //* countMap.merge("even", 1, Integer::sum);
         return countMap;
     }
 
