@@ -638,6 +638,7 @@ public class CollisionDistanceWrapper {
          */
         @Override
         //@SuppressWarnings({ "unchecked", "rawtype" })
+        // TODO
         public int collisionDistance(K key) {
             int start = hashFunction.hashCode(key) % buckets.length;
 
