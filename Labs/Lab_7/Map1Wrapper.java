@@ -492,7 +492,11 @@ public class Map1Wrapper {
         }
 
     }
-    // TODO
+    /**
+     * Input: a list of words.
+     * Output: a map where each word is paired with the number of times it appears.
+     * Example: if L = ["cat", "dog", "cat"], this method returns {"cat" -> 2, "dog" -> 1}.
+     */
     public static Map<String, Integer> dataFrequency(List<String> L) {
         Map<String, Integer> result = new HashtableSC<>();
 
