@@ -72,7 +72,7 @@ public class Map1Wrapper {
 
         }
 
-        // node class
+        // node classes
         private static class Node<E> {
             private E element;
             private Node<E> next;
