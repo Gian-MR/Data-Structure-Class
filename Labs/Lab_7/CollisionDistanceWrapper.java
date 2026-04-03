@@ -636,6 +636,15 @@ public class CollisionDistanceWrapper {
          * @param key Given Key
          * @return Number of positions away from its proper bucket
          */
+
+        /**
+         * Input: a key to search for in the open-addressing hash table.
+         * Output: the number of positions between the key's proper bucket and its
+         * current bucket, or -1 if the key is not stored in the table.
+         * Example: if key = 17, its proper bucket is 2, and it is stored in bucket 5,
+         * this method returns 3.
+         */
+        
         @Override
         //@SuppressWarnings({ "unchecked", "rawtype" })
         // TODO
