@@ -501,8 +501,13 @@ public class BucketPalsWrapper {
             return s + "}";
         }
 
-        //@SuppressWarnings({ "unchecked", "rawtypes" })
-        // TODO
+        /**
+         * Input: a key to look up in the hash table.
+         * Output: a list of the other keys stored in the same bucket as that key.
+         * The returned list excludes the key itself.
+         * Example: if key = "cat" and its bucket contains "cat", "car", and "cap",
+         * this method returns ["car", "cap"].
+         */
         public List<K> bucketPals(K key) {
             List<K> result = new SinglyLinkedList<>();
             int targetBucket = this.hashFunction(key);
