@@ -1,4 +1,4 @@
-package Labs.Lab_4;
+package Labs.Lab_4_LinkedList;
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;

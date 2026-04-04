@@ -1,4 +1,5 @@
-package Labs.Lab_4;
+package Labs.Lab_4_LinkedList;
+
 public class HasCycleWrapper {
     /**
      * Class that holds a single piece of data and a single reference to the node

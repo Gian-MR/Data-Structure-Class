@@ -1,16 +1,14 @@
-package Labs.Lab_4;
-import java.util.Iterator;
-import java.util.NoSuchElementException;
+package Labs.Lab_4_LinkedList;
+import java.util.*;
 
-@SuppressWarnings("unchecked")
-public class SinglyReverseWrapper {
-
+public class ChangeOddEvenWrapper {
     public static interface List<E> extends Iterable<E> {
+
         public int size();
 
         public boolean isEmpty();
 
-        public boolean isMember(E e);
+        public boolean contains(E e);
 
         public int firstIndexOf(E e);
 
@@ -22,17 +20,18 @@ public class SinglyReverseWrapper {
 
         public E get(int index);
 
-        public void set(int index, E e);
-
         public E remove(int index);
 
         public boolean remove(E e);
 
         public int removeAll(E e);
 
+        public E set(int index, E newElement);
+
         public void clear();
 
-        public void reverse();
+        public void changeOddEven();
+
     }
 
     public static class SinglyLinkedList<E> implements List<E> {
@@ -41,7 +40,7 @@ public class SinglyReverseWrapper {
         private class SinglyLinkedListIterator<E> implements Iterator<E> {
             private Node<E> nextNode;
 
-            @SuppressWarnings("")
+            @SuppressWarnings("unchecked")
             public SinglyLinkedListIterator() {
                 this.nextNode = (Node<E>) header.getNext();
             }
@@ -115,7 +114,7 @@ public class SinglyReverseWrapper {
         }
 
         @Override
-        public boolean isMember(E e) {
+        public boolean contains(E e) {
             return this.firstIndexOf(e) >= 0;
         }
 
@@ -181,16 +180,6 @@ public class SinglyReverseWrapper {
 
         }
 
-        @Override
-        public void set(int position, E e) {
-            if ((position < 0) || position >= this.currentSize) {
-                throw new IndexOutOfBoundsException();
-            }
-
-            Node<E> temp = this.getPosition(position);
-            temp.setElement(e);
-        }
-
         private Node<E> getPosition(int index) {
             int currentPosition = 0;
             Node<E> temp = this.header.getNext();
@@ -226,6 +215,18 @@ public class SinglyReverseWrapper {
                 return result;
 
             }
+        }
+
+        @Override
+        public E set(int position, E newElement) {
+            if ((position < 0) || position >= this.currentSize) {
+                throw new IndexOutOfBoundsException();
+            }
+            Node<E> temp = this.getPosition(position);
+            E result = temp.getElement();
+            temp.setElement(newElement);
+            return result;
+
         }
 
         @Override
@@ -273,26 +274,41 @@ public class SinglyReverseWrapper {
         }
 
         /*
-         * Implement a member method called reverse() which reverses the elements in a
-         * list.
-         * For example, if L = {Ken, Al, Bob, Mel} then a call to L.reverse() turns L
-         * into
-         * L = {Mel, Bob, Al, Ken}.
+         * Write a member method changeOddEven which takes all elements in odd positions
+         * in the this list and moves them after all the even elements in the list.
+         * The relative order between the odd elements is maintained. The same applies
+         * to
+         * the even elements. Remember that the first position is 0 which is considered
+         * even.
+         * For example, if L = {Bob, Ned, Jil, Amy, Kim} then L.changeOddEven() turns L
+         * into L = {Bob, Jil, Kim, Ned, Amy}.
          */
+
         @Override
-        public void reverse() {
-            /* TOdO ADD YOUR CODE HERE */
+        public void changeOddEven() {
+            // ADD YOU CODE HERE
+            ArrayList<E> evens = new ArrayList<>();
+            ArrayList<E> odds = new ArrayList<>();
+            
+            Node<E> curr = this.header.getNext();
+            int idx = 0;
 
-            Node<E> prev = null, curr = this.header.getNext(); 
-
-            while(curr != null){
-                Node<E> temp = curr.getNext();
-                curr.setNext(prev);
-                prev = curr;
-                curr = temp;
+            while (curr != null) {
+                if(idx % 2 == 0){
+                    evens.add(curr.getElement());
+                }else{
+                    odds.add(curr.getElement());
+                }
+                curr.getNext();
+                idx++;
             }
-            this.header.setNext(prev); 
+            this.clear();
+            for (E e : odds) {
+                this.add(e);
+            }
+            for (E e : evens) {
+                this.add(e);
+            }
         }
-
     }
 }
