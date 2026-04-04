@@ -1,4 +1,4 @@
-package Labs.Lab_2;
+package Labs.Lab_2_ArraysSearch;
 public class IsValidSudokuWrapper {
     public static boolean isValidSudoku(char[][] board) {
         /* ADD YOUR CODE HERE */

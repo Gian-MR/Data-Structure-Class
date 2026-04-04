@@ -1,4 +1,4 @@
-package Labs.Lab_2;
+package Labs.Lab_2_ArraysSearch;
 import java.util.Arrays;
 
 public class TwoSumWrapper {
