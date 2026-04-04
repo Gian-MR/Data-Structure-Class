@@ -1,4 +1,4 @@
-package Labs.Lab_5;
+package Labs.Lab_5_DoublyList;
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;
