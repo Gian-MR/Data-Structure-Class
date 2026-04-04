@@ -1,4 +1,4 @@
-package Labs.Lab_7;
+package Labs.Lab_7_HashMaps;
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;

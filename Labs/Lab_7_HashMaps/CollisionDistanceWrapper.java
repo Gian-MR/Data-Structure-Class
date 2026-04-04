@@ -1,43 +1,12 @@
-package Labs.Lab_7;
+package Labs.Lab_7_HashMaps;
 
 import java.io.PrintStream;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-public class HashSetWrapper {
-
-    public static boolean answer(Set<String> StudentsInPhysics, Set<String> StudentsInBiology,
-            Set<String> StudentsInEnglish) {
-        return !StudentsInPhysics.isMember("Tom") && !StudentsInBiology.isMember("Tom"); 
-    }
-
-    public static interface Set<E> extends Iterable<E> {
-        public boolean add(E obj);
-
-        public boolean isMember(E obj);
-
-        public boolean remove(E obj);
-
-        public boolean isEmpty();
-
-        public int size();
-
-        public void clear();
-
-        public Set<E> union(Set<E> S2);
-
-        public Set<E> difference(Set<E> S2);
-
-        public Set<E> intersection(Set<E> S2);
-
-        public boolean isSubset(Set<E> S2);
-    }
+public class CollisionDistanceWrapper {
 
     public static interface Map<K, V> {
-        public int size();
-
-        public boolean isEmpty();
-
         public V get(K key);
 
         public void put(K key, V value);
@@ -46,18 +15,24 @@ public class HashSetWrapper {
 
         public boolean containsKey(K key);
 
-        public void clear();
-
         public List<K> getKeys();
 
         public List<V> getValues();
 
-        public void print(PrintStream out);
+        public int size();
+
+        public boolean isEmpty();
+
+        public void clear();
+
+        public void print(PrintStream out); /* For debugging purposes */
+
+        public int collisionDistance(K elm);
     }
 
-    public interface HashFunction<K> {
-
-        int hashCode(K key);
+    @FunctionalInterface
+    public static interface HashFunction<K> {
+        public int hashCode(K key);
     }
 
     public static interface List<E> extends Iterable<E> {
@@ -93,7 +68,7 @@ public class HashSetWrapper {
         public void clear();
     }
 
-    public static class SinglyLinkedList<E> implements List<E> {
+    public static class LinkedList<E> implements List<E> {
 
         private class Node {
             private E value;
@@ -163,7 +138,7 @@ public class HashSetWrapper {
         private Node header;
         private int currentSize;
 
-        public SinglyLinkedList() {
+        public LinkedList() {
             header = new Node();
             currentSize = 0;
         }
@@ -375,113 +350,191 @@ public class HashSetWrapper {
         }
     }
 
-    public static class SimpleHashFunction<K> implements HashFunction<K> {
+    public static class HashTableOA<K, V> implements Map<K, V> {
 
-        @Override
-        public int hashCode(K key) {
-            String temp = key.toString();
-            int result = 0;
-            for (int i = 0; i < temp.length(); i++)
-                result += temp.charAt(i);
-            return result;
-        }
-
-    }
-
-    public static class HashTableSC<K, V> implements Map<K, V> {
-
-        /**
-         * The values in the linked lists within our buckets will be of this type.
-         * 
-         * @author Juan O. Lopez
-         */
-        private class BucketNode<K, V> {
+        @SuppressWarnings("hiding")
+        private class Bucket<K, V> {
             private K key;
             private V value;
+            private boolean inUse;
 
-            public BucketNode(K key, V value) {
+            public Bucket(K key, V value, boolean inUse) {
                 this.key = key;
                 this.value = value;
+                this.inUse = inUse;
+            }
+
+            public Bucket() {
+                this(null, null, false);
             }
 
             public K getKey() {
                 return key;
             }
 
+            // public void setKey(K key) {
+            //     this.key = key;
+            // }
+
             public V getValue() {
                 return value;
             }
+
+            // public void setValue(V value) {
+            //     this.value = value;
+            // }
+
+            public boolean isInUse() {
+                return inUse;
+            }
+
+            // public void setInUse(boolean isInUse) {
+            //     this.inUse = isInUse;
+            // }
+
+            public void release() {
+                this.key = null;
+                this.value = null;
+                this.inUse = false;
+
+            }
         }
 
-        // private fields
+        private Bucket<K, V>[] buckets;
         private int currentSize;
-        private List<BucketNode<K, V>>[] buckets;
         private HashFunction<K> hashFunction;
-        /* ADD LOAD FACTOR CONSTANT HERE */
-        private static final double loadFactor = 0.75;
+        private static final int DEFAULT_SIZE = 11; // Java uses a default size of 11
+        private static final double loadFactor = 1.0;
 
         @SuppressWarnings("unchecked")
-        public HashTableSC(int initialCapacity, HashFunction<K> hashFunction) {
+        public HashTableOA(int initialCapacity) {
             if (initialCapacity < 1)
                 throw new IllegalArgumentException("Capacity must be at least 1");
-            if (hashFunction == null)
-                throw new IllegalArgumentException("Hash function cannot be null");
 
-            currentSize = 0;
-            this.hashFunction = hashFunction;
-            buckets = new SinglyLinkedList[initialCapacity];
-            for (int i = 0; i < initialCapacity; i++)
-                buckets[i] = new SinglyLinkedList<BucketNode<K, V>>();
+            this.currentSize = 0;
+            this.buckets = new Bucket[initialCapacity];
+            for (int i = 0; i < buckets.length; i++)
+                buckets[i] = new Bucket<>();
+            this.hashFunction = (key) -> (Integer) key % buckets.length;
 
+        }
+
+        public HashTableOA() {
+            this(DEFAULT_SIZE);
         }
 
         @Override
         public V get(K key) {
             if (key == null)
-                throw new IllegalArgumentException("Parameter cannot be null.");
+                throw new IllegalArgumentException("Key cannot be null");
 
-            /* First we determine the bucket corresponding to this key */
-            int targetBucket = hashFunction.hashCode(key) % buckets.length;
-            /*
-             * Within that bucket there is a linked list, since we're using Separate
-             * Chaining
+            /**
+             * First, find the bucket this key is supposed to be in
+             * if no collisions happened by using the hash function
              */
-            List<BucketNode<K, V>> L = buckets[targetBucket];
-            /* Look for the key within the nodes of that linked list */
-            for (BucketNode<K, V> BN : L) {
-                if (BN.getKey().equals(key)) // Found it!
-                    return BN.getValue();
-            }
+            int targetBucket = hashFunction.hashCode(key) % buckets.length;
 
-            return null; // Did not find it
+            /**
+             * If the target bucket has an entry and it is the one we are looking for
+             * return the value associated to that entrie's key
+             */
+            if (buckets[targetBucket].isInUse() && buckets[targetBucket].getKey().equals(key))
+                return buckets[targetBucket].getValue();
+            else
+                /**
+                 * If it is empty or it has a different entry than the one we are looking for,
+                 * we need to check the other buckets using linear probing.
+                 */
+                return getLinearProbing(key, targetBucket);
+        }
+
+        private V getLinearProbing(K key, int start) {
+            int index = getBucket(key, start); // Try to find correct bucket
+            if (index != -1) // Found it!
+                return buckets[index].getValue();
+            return null;
+        }
+
+        /**
+         * Helper method to find the bucket containing a specific key by probing.
+         * 
+         * @param key   The key to search for
+         * @param start The index where the collision happened
+         * @return The index where the key was found (or -1 if not found)
+         */
+        private int getBucket(K key, int start) {
+            int n = buckets.length;
+            /**
+             * Keep checking buckets until we find the key,
+             * or we wrap-around to the start position.
+             */
+            for (int i = (start + 1) % n; i != start; i = (i + 1) % n) {
+                Bucket<K, V> bucket = buckets[i];
+                /**
+                 * If we reach a bucket not in use, then our key will not be found,
+                 * because no value has been added here through probing.
+                 */
+                if (!bucket.isInUse())
+                    return -1;
+                else if (bucket.getKey().equals(key))
+                    return i; // Found it!
+            }
+            return -1; // Did not find it even after checking all of the remaining buckets
         }
 
         @Override
         public void put(K key, V value) {
             if (key == null || value == null)
-                throw new IllegalArgumentException("Parameter cannot be null.");
-            /*
-             * Can't have two elements with same key,
-             * so remove existing element with the given key (if any)
+                throw new IllegalArgumentException("Parameters cannot be null");
+
+            /**
+             * Can't have 2 entries with the same key, so remove any entries with the
+             * same key passed as parameter.
              */
             remove(key);
 
-            /* TODO What needs to be added here??? */
-            double currentLF = (double) size() / (double) buckets.length;
-            if (currentLF > loadFactor) {
+            double curLoadFactor = (double) size() / (double) buckets.length;
+
+            if (curLoadFactor > loadFactor)
                 rehash();
+
+            /**
+             * Find target bucket associated to given key, and insert it
+             */
+            int targetBucket = hashFunction.hashCode(key) % buckets.length;
+            if (!buckets[targetBucket].isInUse())
+                buckets[targetBucket] = new Bucket<>(key, value, true);
+            else
+                putLinearProbing(key, value, targetBucket);
+            currentSize++;
+        }
+
+        private void putLinearProbing(K key, V value, int start) {
+            int n = buckets.length;
+            for (int i = (start + 1) % n; i != start; i = (i + 1) % n) {
+                Bucket<K, V> bucket = buckets[i];
+                if (!bucket.isInUse()) {
+                    buckets[i] = new Bucket<>(key, value, true);
+                    return;
+                }
+            }
+        }
+
+        @SuppressWarnings("unchecked")
+        private void rehash() {
+            Bucket<K, V>[] newBuckets = new Bucket[buckets.length * 2];
+            for (int i = 0; i < newBuckets.length; i++) {
+                newBuckets[i] = new Bucket<>(null, null, false);
             }
 
-            /* Determine the bucket corresponding to this key */
-            int targetBucket = hashFunction.hashCode(key) % buckets.length;
-            /*
-             * Within that bucket there is a linked list, since we're using Separate
-             * Chaining
-             */
-            List<BucketNode<K, V>> L = buckets[targetBucket];
-            /* Finally, add the key/value to the linked list */
-            L.add(0, new BucketNode<K, V>(key, value));
-            currentSize++;
+            for (Bucket<K, V> bucket : newBuckets) {
+                if (bucket.isInUse()) {
+                    int targetBucket = hashFunction.hashCode(bucket.getKey()) % newBuckets.length;
+                    newBuckets[targetBucket] = new Bucket<>(bucket.getKey(), bucket.getValue(), true);
+                }
+            }
+
+            buckets = newBuckets;
         }
 
         @Override
@@ -491,22 +544,25 @@ public class HashSetWrapper {
 
             /* First we determine the bucket corresponding to this key */
             int targetBucket = hashFunction.hashCode(key) % buckets.length;
-            /*
-             * Within that bucket there is a linked list, since we're using Separate
-             * Chaining
-             */
-            List<BucketNode<K, V>> L = buckets[targetBucket];
-            /* Iterate over linked list trying to find this the key */
-            int pos = 0;
-            for (BucketNode<K, V> BN : L) {
-                if (BN.getKey().equals(key)) { // Found it!
-                    L.remove(pos);
-                    currentSize--;
-                    return BN.getValue();
-                } else
-                    pos++;
-            }
-            return null;
+            Bucket<K, V> b = buckets[targetBucket];
+            if (b.isInUse() && b.getKey().equals(key)) {
+                V v = b.getValue();
+                b.release();
+                currentSize--;
+                return v;
+            } else
+                return removeLinearProbing(key, targetBucket);
+        }
+
+        private V removeLinearProbing(K key, int start) {
+            int index = getBucket(key, start);
+            if (index != -1) { // Found it!
+                V v = buckets[index].getValue();
+                buckets[index].release();
+                currentSize--;
+                return v;
+            } else
+                return null;
         }
 
         @Override
@@ -516,21 +572,21 @@ public class HashSetWrapper {
 
         @Override
         public List<K> getKeys() {
-            List<K> result = new SinglyLinkedList<K>();
-            /* For each bucket in the hash table, get the keys in that linked list */
-            for (int i = 0; i < buckets.length; i++)
-                for (BucketNode<K, V> BN : buckets[i])
-                    result.add(0, BN.getKey());
+            List<K> result = new LinkedList<>();
+            for (Bucket<K, V> bucket : buckets) {
+                if (bucket.isInUse())
+                    result.add(0, bucket.getKey());
+            }
             return result;
         }
 
         @Override
         public List<V> getValues() {
-            List<V> result = new SinglyLinkedList<V>();
-            /* For each bucket in the hash table, get the values in that linked list */
-            for (int i = 0; i < buckets.length; i++)
-                for (BucketNode<K, V> BN : buckets[i])
-                    result.add(0, BN.getValue());
+            List<V> result = new LinkedList<>();
+            for (Bucket<K, V> bucket : buckets) {
+                if (bucket.isInUse())
+                    result.add(0, bucket.getValue());
+            }
             return result;
         }
 
@@ -546,220 +602,66 @@ public class HashSetWrapper {
 
         @Override
         public void clear() {
-            currentSize = 0;
             for (int i = 0; i < buckets.length; i++)
-                buckets[i].clear();
+                buckets[i].release();
+
+            currentSize = 0;
         }
 
         @Override
         public void print(PrintStream out) {
-            /* For each bucket in the hash table, print the elements in that linked list */
-            for (int i = 0; i < buckets.length; i++)
-                for (BucketNode<K, V> BN : buckets[i])
-                    out.printf("(%s, %s)\n", BN.getKey(), BN.getValue());
-        }
-
-        /**
-         * TODO Bring your implementation of rehash to this implementation as well
-         */
-        @SuppressWarnings("unchecked")
-        private void rehash() {
-            List<BucketNode<K, V>>[] oldMap = buckets;
-            List<BucketNode<K, V>>[] newMap = new SinglyLinkedList[size() * 2];
-            buckets = newMap;
+            /* For each bucket in use in the hash table, print the elements */
             for (int i = 0; i < buckets.length; i++) {
-                buckets[i] = new SinglyLinkedList<BucketNode<K, V>>();
+                Bucket<K, V> b = buckets[i];
+                if (b.isInUse())
+                    out.printf("(%s, %s)\n", b.getKey(), b.getValue());
             }
-            for (List<BucketNode<K, V>> list : oldMap) {
-                for (BucketNode<K, V> old : list) {
-                    /* Determine the bucket corresponding to this key */
-                    int targetBucket = hashFunction.hashCode(old.getKey()) % buckets.length;
-                    /*
-                     * Within that bucket there is a linked list, since we're using Separate
-                     * Chaining
-                     */
-                    List<BucketNode<K, V>> L = buckets[targetBucket];
-                    /* Finally, add the key/value to the linked list */
-                    L.add(0, new BucketNode<K, V>(old.getKey(), old.getValue()));
+        }
 
-                }
-            }
+        /**
+         * Consider the hash table implemented with open addressing.
+         * 
+         * Remember that a collision will cause an entry with a given key to be stored
+         * in a
+         * different bucket from the one that the hash function indicates.
+         * 
+         * The bucket that the hash function indicates is called the “proper bucket”.
+         * Write a member method collisionDistance() which returns the number of
+         * positions
+         * away from its proper bucket for a given key.
+         * 
+         * The function returns -1 if key is not in the hash table,
+         * or 0 if the element key is in the bucket that the hash function specifies.
+         * 
+         * @param key Given Key
+         * @return Number of positions away from its proper bucket
+         */
 
+        /**
+         * Input: a key to search for in the open-addressing hash table.
+         * Output: the number of positions between the key's proper bucket and its
+         * current bucket, or -1 if the key is not stored in the table.
+         * Example: if key = 17, its proper bucket is 2, and it is stored in bucket 5,
+         * this method returns 3.
+         */
+        
+        @Override
+        //@SuppressWarnings({ "unchecked", "rawtype" })
+        // TODO
+        public int collisionDistance(K key) {
+            int start = hashFunction.hashCode(key) % buckets.length;
+
+            if (buckets[start].isInUse() && buckets[start].getKey().equals(key))
+                return 0;
+
+            int index = getBucket(key, start);
+            if (index == -1)
+                return -1;
+
+            if (index >= start)
+                return index - start;
+            else
+                return (buckets.length - start) + index;
         }
     }
-
-    /**
-     * Custom Implementation of a HashSet
-     * This version of HashSet is backed by a Separate Chaining Hash Table
-     * 
-     * @author Fernando J. Bermudez - bermed28
-     *
-     * @param <E>
-     */
-    public static class HashSet<E> implements Set<E> {
-        // Private Fields
-        private Map<E, Object> hashtable;
-        private static final int DEFAULT_SET_SIZE = 10;
-
-        /* Constructs an empty HashSet with a given initial capacity */
-        public HashSet(int initialCapacity) {
-            hashtable = new HashTableSC<E, Object>(initialCapacity, new SimpleHashFunction<E>());
-        }
-
-        /* Constructs an empty HashSet with a default initial capacity of ten */
-        public HashSet() {
-            hashtable = new HashTableSC<E, Object>(DEFAULT_SET_SIZE, new SimpleHashFunction<E>());
-        }
-
-        @Override
-        public Iterator<E> iterator() {
-            return hashtable.getKeys().iterator();
-        }
-
-        /**
-         * Takes a given object that is not already in the set
-         * and adds it to the HashSet according to the hashCode generated for the object
-         * 
-         * @param obj - Object to be added to set
-         * @return true or false, depending if the object was added to the set
-         */
-        @Override
-        public boolean add(E obj) {
-            if (isMember(obj))
-                return false;
-            hashtable.put(obj, new Object()); // We put as parameter for value a dummy object
-            return true;
-        }
-
-        /**
-         * Returns true if the given object is a member (is included) of the HashSet
-         * 
-         * @param obj - object to verify if is in set
-         */
-        @Override
-        public boolean isMember(E obj) {
-            return hashtable.containsKey(obj);
-        }
-
-        /**
-         * Removes a given object from the set and returns true if the object was
-         * actually removed or not
-         * 
-         * @param obj - object to remove
-         */
-        @Override
-        public boolean remove(E obj) {
-            return hashtable.remove(obj) != null;
-        }
-
-        /**
-         * Checks to see if set is empty
-         * 
-         * @return true or false if the set is empty or not
-         */
-        @Override
-        public boolean isEmpty() {
-            return hashtable.isEmpty();
-        }
-
-        /**
-         * @return size of HashSet
-         */
-        @Override
-        public int size() {
-            return hashtable.size();
-        }
-
-        /**
-         * Removes everything from HashSet until it is empty
-         */
-        @Override
-        public void clear() {
-            hashtable.clear();
-        }
-
-        /**
-         * Returns a set with the all the elements from the target set and a given S2
-         * combined
-         * 
-         * @param S2 - the second set
-         * @return S3 - The set with the combined elements from the target set and S2
-         */
-        @Override
-        public Set<E> union(Set<E> S2) {
-            Set<E> result = new HashSet<E>(this.size() + S2.size());
-            for (E elm : this)
-                result.add(elm);
-            for (E elm : S2)
-                result.add(elm);
-            return result;
-        }
-
-        /**
-         * Returns a set with the non-common elements from the target set and a given S2
-         * 
-         * @param S2 - the second set
-         * @return S3 - The set with the non-common elements from the target set and S2
-         */
-        @Override
-        public Set<E> difference(Set<E> S2) {
-            Set<E> result = new HashSet<E>();
-            for (E elm : this) {
-                if (!S2.isMember(elm)) {
-                    result.add(elm);
-                }
-            }
-            return result;
-        }
-
-        /**
-         * Returns a set with the common elements from the target set and a given S2
-         * 
-         * @param S2 - the second set
-         * @return S3 - The set with the common elements from the target set and S2
-         */
-        @Override
-        public Set<E> intersection(Set<E> S2) {
-            Set<E> S3 = new HashSet<>();
-            for (E e : this)
-                if (S2.isMember(e))
-                    S3.add(e);
-            return S3;
-        }
-
-        /**
-         * Returns true if S2 is a subset of the target set, otherwise it returns false
-         * 
-         * @param S2 - the set to compare with
-         */
-        @Override
-        public boolean isSubset(Set<E> S2) {
-            List<E> elements = this.hashtable.getKeys();
-            for (int i = 0; i < this.size(); ++i) {
-                if (!S2.isMember(elements.get(i))) {
-                    return false;
-                }
-            }
-            return true;
-        }
-
-        @Override
-        public String toString() {
-            List<E> elm = this.hashtable.getKeys();
-            String s = "{";
-            for (E e : elm) {
-                s += " " + e;
-            }
-            return s + "}";
-        }
-
-        @Override
-        @SuppressWarnings("unchecked")
-        public boolean equals(Object S) {
-            Set<E> S1 = (Set<E>) S;
-            return this.difference(S1).isEmpty() && S1.difference(this).isEmpty();
-        }
-
-    }
-
 }
