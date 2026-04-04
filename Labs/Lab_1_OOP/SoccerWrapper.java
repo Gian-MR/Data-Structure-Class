@@ -1,4 +1,4 @@
-package Labs.Lab_1;
+package Labs.Lab_1_OOP;
 
 public class SoccerWrapper {
 
