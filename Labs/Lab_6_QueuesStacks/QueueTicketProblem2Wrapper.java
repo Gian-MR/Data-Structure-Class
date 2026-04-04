@@ -1,4 +1,4 @@
-package Labs.Lab_6;
+package Labs.Lab_6_QueuesStacks;
 
 import java.io.PrintStream;
 
