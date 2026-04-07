@@ -1,6 +1,8 @@
 package Labs.Lab_8_Trees;
 
-@SuppressWarnings({ "unchecked", "rawtypes" })
+import java.util.logging.Level;
+
+//@SuppressWarnings({ "unchecked", "rawtypes" })
 public class LevelCountWrapper {
     public static interface TreeNode<E> {
         public E getValue();
@@ -205,13 +207,22 @@ public class LevelCountWrapper {
         @Override
         public int getLevelCount(int level) {
             /* ADD YOUR CODE HERE */
-            return -1;
+            if (level <= 0){
+                throw new IllegalArgumentException("Level must be higher than 0");
+            }
+            return this.getRecLevelCount(this.root, level);
         }
 
         /* RECURSIVE AUXILIARY METHOD */
         private int getRecLevelCount(BinaryTreeNode<E> root, int level) {
             /* ADD YOUR CODE HERE */
-            return -1;
+            if (root == null){
+                return 0;
+            } 
+            if (level == 1){
+                return 1;
+            }
+            return this.getRecLevelCount(root.getLeftChild(), level - 1) + this.getRecLevelCount(root.getRightChild(), level - 1);
         }
     }
 
