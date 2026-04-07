@@ -3,7 +3,7 @@ package Labs.Lab_8_Trees;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-@SuppressWarnings({ "unchecked", "rawtypes" })
+// @SuppressWarnings({ "unchecked", "rawtypes" })
 public class LevelElementWrapper {
 
     public static interface List<E> extends Iterable<E> {
@@ -460,31 +460,45 @@ public class LevelElementWrapper {
 
         }
 
-        private BinaryTreeNode<E> find(E e, BinaryTreeNode<E> N) {
-            if (N == null) {
-                return null;
-            } else if (N.getValue().equals(e)) {
-                return N;
-            } else {
-                BinaryTreeNode<E> temp = find(e, N.getLeftChild());
-                if (temp != null) {
-                    return temp;
-                } else {
-                    return find(e, N.getRightChild());
-                }
-            }
-        }
+        // private BinaryTreeNode<E> find(E e, BinaryTreeNode<E> N) {
+        //     if (N == null) {
+        //         return null;
+        //     } else if (N.getValue().equals(e)) {
+        //         return N;
+        //     } else {
+        //         BinaryTreeNode<E> temp = find(e, N.getLeftChild());
+        //         if (temp != null) {
+        //             return temp;
+        //         } else {
+        //             return find(e, N.getRightChild());
+        //         }
+        //     }
+        // }
 
         @Override
         public List<E> getLevelElements(int level) {
             /* ADD YOUR CODE HERE */
-            return null;
+            if(level <= 0){
+                throw new IllegalArgumentException("Must be higher than 0");
+            }
+            List<E> elements = new SinglyLinkedList<>();
+            this.getRecLevelElements(this.root, level, elements);
+            return elements;
+
         }
 
         /* RECURSIVE AUXILIARY METHOD */
         private void getRecLevelElements(BinaryTreeNode<E> root, int level, List<E> elements) {
             /* ADD YOUR CODE HERE */
-
+            if (root == null) {
+                return;
+            }
+            if (level == 1) {
+                elements.add(root.getValue());
+            } else {
+                this.getRecLevelElements(root.getLeftChild(), level - 1, elements);
+                this.getRecLevelElements(root.getRightChild(), level - 1, elements);
+            }
         }
 
     }
