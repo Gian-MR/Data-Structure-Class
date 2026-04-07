@@ -3,7 +3,7 @@ package Labs.Lab_8_Trees;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-@SuppressWarnings({ "unchecked", "rawtypes" })
+//@SuppressWarnings({ "unchecked", "rawtypes" })
 public class InvertTreeWrapper {
 
     public static interface List<E> extends Iterable<E> {
@@ -40,10 +40,10 @@ public class InvertTreeWrapper {
         private class SinglyLinkedListIterator<E> implements Iterator<E> {
             private Node<E> nextNode;
 
-            @SuppressWarnings("unchecked")
-            public SinglyLinkedListIterator() {
-                this.nextNode = (Node<E>) header.getNext();
-            }
+           // @SuppressWarnings("unchecked")
+            // public SinglyLinkedListIterator() {
+            //     this.nextNode = (Node<E>) header.getNext();
+            // }
 
             @Override
             public boolean hasNext() {
@@ -438,12 +438,20 @@ public class InvertTreeWrapper {
         @Override
         public void invert() {
             /* ADD YOUR CODE HERE */
+            this.invertAux(root);
         }
 
         /* RECURSIVE AUXILIARY METHOD */
         private void invertAux(BinaryTreeNode<E> node) {
             /* ADD YOUR CODE HERE */
 
+            if (node != null) {
+                BinaryTreeNode<E> temp = node.getLeftChild();
+                node.setLeftChild(node.getRightChild());
+                node.setRightChild(temp);
+                this.invertAux(node.getLeftChild());
+                this.invertAux(node.getRightChild());
+            }
         }
     }
 }
