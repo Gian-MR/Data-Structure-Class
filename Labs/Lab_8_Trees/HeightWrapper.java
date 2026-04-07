@@ -236,13 +236,23 @@ public class HeightWrapper {
 		}
 		
 		@Override
-		@SuppressWarnings({ "unchecked", "rawtypes" })
+		//@SuppressWarnings({ "unchecked", "rawtypes" })
 		public int height(E e) {
 			// ADD CODE HERE
-			// CAN USE AUXILARY METHOD
-			return -12;
+			// CAN USE AUXILIARY METHOD
+
+			BinaryTreeNode<E> curr = this.find(e, this.root);
+			if (curr == null) {
+				return -1;
+			}
+			return this.heightHelper(curr);
 		}
 
+		public int heightHelper(BinaryTreeNode<E> n) {
+			if (n == null) {
+				return -1;
+			}
+			return 1 + Math.max(this.heightHelper(n.getLeftChild()), this.heightHelper(n.getRightChild()));
+		}
 	}
-
 }
