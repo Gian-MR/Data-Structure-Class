@@ -1,6 +1,5 @@
 package Labs.Lab_8_Trees;
 
-import java.util.logging.Level;
 
 //@SuppressWarnings({ "unchecked", "rawtypes" })
 public class LevelCountWrapper {
@@ -189,20 +188,20 @@ public class LevelCountWrapper {
 
         }
 
-        private BinaryTreeNode<E> find(E e, BinaryTreeNode<E> N) {
-            if (N == null) {
-                return null;
-            } else if (N.getValue().equals(e)) {
-                return N;
-            } else {
-                BinaryTreeNode<E> temp = find(e, N.getLeftChild());
-                if (temp != null) {
-                    return temp;
-                } else {
-                    return find(e, N.getRightChild());
-                }
-            }
-        }
+        // private BinaryTreeNode<E> find(E e, BinaryTreeNode<E> N) {
+        //     if (N == null) {
+        //         return null;
+        //     } else if (N.getValue().equals(e)) {
+        //         return N;
+        //     } else {
+        //         BinaryTreeNode<E> temp = find(e, N.getLeftChild());
+        //         if (temp != null) {
+        //             return temp;
+        //         } else {
+        //             return find(e, N.getRightChild());
+        //         }
+        //     }
+        // }
 
         @Override
         public int getLevelCount(int level) {
