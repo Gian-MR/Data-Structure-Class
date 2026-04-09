@@ -15,14 +15,14 @@ public class Exercise3_InorderTraversal {
         }
     }
 
+    // Instructions:
+    // 1. Create an ArrayList<Integer> for the result.
+    // 2. Use a helper method for recursive inorder traversal.
+    // 3. Inorder order is: Left -> Root -> Right.
+    // 4. Add visited node values to the list.
+    // 5. Return the list.
+    
     public static List<Integer> inorderTraversal(TreeNode root) {
-        // Instructions:
-        // 1. Create an ArrayList<Integer> for the result.
-        // 2. Use a helper method for recursive inorder traversal.
-        // 3. Inorder order is: Left -> Root -> Right.
-        // 4. Add visited node values to the list.
-        // 5. Return the list.
-
         // ADD CODE HERE
         List<Integer> result = new ArrayList<>();
         inorderHelper(root, result);
