@@ -11,14 +11,13 @@ public class Exercise8_LowestCommonAncestorBST {
             this.val = val;
         }
     }
+    // Instructions:
+    // 1. In a BST, left values are smaller and right values are larger.
+    // 2. If both p and q are smaller than root, move left.
+    // 3. If both are larger than root, move right.
+    // 4. Otherwise, root is the split point and the LCA.
 
     public static TreeNode lowestCommonAncestor(TreeNode root, int p, int q) {
-        // Instructions:
-        // 1. In a BST, left values are smaller and right values are larger.
-        // 2. If both p and q are smaller than root, move left.
-        // 3. If both are larger than root, move right.
-        // 4. Otherwise, root is the split point and the LCA.
-
         // ADD CODE HERE
         TreeNode cur = root;
         while (cur != null) {
