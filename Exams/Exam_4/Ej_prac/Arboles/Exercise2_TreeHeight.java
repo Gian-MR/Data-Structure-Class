@@ -11,21 +11,19 @@ public class Exercise2_TreeHeight {
             this.val = val;
         }
     }
+    // Instructions:
+    // 1. If root is null, return 0.
+    // 2. Get the height of the left subtree.
+    // 3. Get the height of the right subtree.
+    // 4. Return 1 + max(leftHeight, rightHeight).
 
     public static int treeHeight(TreeNode root) {
-        // Instructions:
-        // 1. If root is null, return 0.
-        // 2. Get the height of the left subtree.
-        // 3. Get the height of the right subtree.
-        // 4. Return 1 + max(leftHeight, rightHeight).
 
         // ADD CODE HERE
         if (root == null) {
             return 0;
         }
-        int leftHeight = treeHeight(root.left);
-        int rightHeight = treeHeight(root.right);
-        return 1 + Math.max(leftHeight, rightHeight);
+        return 1 + Math.max(treeHeight(root.left), treeHeight(root.right));
     }
 
     public static void main(String[] args) {
