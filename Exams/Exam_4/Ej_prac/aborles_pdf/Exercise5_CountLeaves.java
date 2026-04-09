@@ -11,14 +11,13 @@ public class Exercise5_CountLeaves {
             this.val = val;
         }
     }
+    // Instructions:
+    // 1. If root is null, return 0.
+    // 2. If root has no children, return 1.
+    // 3. Recursively count leaves in left and right subtrees.
+    // 4. Return the sum.
 
     public static int countLeaves(TreeNode root) {
-        // Instructions:
-        // 1. If root is null, return 0.
-        // 2. If root has no children, return 1.
-        // 3. Recursively count leaves in left and right subtrees.
-        // 4. Return the sum.
-
         // ADD CODE HERE
         if (root == null) {
             return 0;
