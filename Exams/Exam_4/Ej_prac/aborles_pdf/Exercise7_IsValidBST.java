@@ -11,14 +11,13 @@ public class Exercise7_IsValidBST {
             this.val = val;
         }
     }
+    // Instructions:
+    // 1. A valid BST requires left < node < right.
+    // 2. Use helper recursion with lower and upper bounds.
+    // 3. If a node breaks bounds, return false.
+    // 4. Otherwise validate both subtrees.
 
     public static boolean isValidBST(TreeNode root) {
-        // Instructions:
-        // 1. A valid BST requires left < node < right.
-        // 2. Use helper recursion with lower and upper bounds.
-        // 3. If a node breaks bounds, return false.
-        // 4. Otherwise validate both subtrees.
-
         // ADD CODE HERE
         return validate(root, Long.MIN_VALUE, Long.MAX_VALUE);
     }
