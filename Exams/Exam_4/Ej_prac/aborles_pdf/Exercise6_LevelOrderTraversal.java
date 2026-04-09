@@ -16,14 +16,13 @@ public class Exercise6_LevelOrderTraversal {
             this.val = val;
         }
     }
+    // Instructions:
+    // 1. If root is null, return an empty list.
+    // 2. Use a Queue to do BFS.
+    // 3. Remove one node at a time, add its value to result.
+    // 4. Push non-null left and right children into the queue.
 
     public static List<Integer> levelOrder(TreeNode root) {
-        // Instructions:
-        // 1. If root is null, return an empty list.
-        // 2. Use a Queue to do BFS.
-        // 3. Remove one node at a time, add its value to result.
-        // 4. Push non-null left and right children into the queue.
-
         // ADD CODE HERE
         List<Integer> result = new ArrayList<>();
         if (root == null) {
