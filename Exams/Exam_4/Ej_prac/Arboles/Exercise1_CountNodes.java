@@ -11,21 +11,18 @@ public class Exercise1_CountNodes {
             this.val = val;
         }
     }
+    // Instructions:
+    // 1. If root is null, return 0.
+    // 2. Recursively count nodes in the left subtree.
+    // 3. Recursively count nodes in the right subtree.
+    // 4. Return 1 + leftCount + rightCount.
 
     public static int countNodes(TreeNode root) {
-        // Instructions:
-        // 1. If root is null, return 0.
-        // 2. Recursively count nodes in the left subtree.
-        // 3. Recursively count nodes in the right subtree.
-        // 4. Return 1 + leftCount + rightCount.
-
         // ADD CODE HERE
         if (root == null) {
             return 0;
         }
-        int leftCount = countNodes(root.left);
-        int rightCount = countNodes(root.right);
-        return 1 + leftCount + rightCount;
+        return 1 + (countNodes(root.left) + countNodes(root.right));
     }
 
     public static void main(String[] args) {
