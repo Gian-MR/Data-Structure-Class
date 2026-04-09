@@ -1,10 +1,5 @@
 package Exam_4.Ej_prac.HashSet;
 
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Set;
-
 public class syntax {
 
 	/*
