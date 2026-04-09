@@ -12,13 +12,13 @@ public class Exercise4_SearchBST {
         }
     }
 
-    public static boolean searchBST(TreeNode root, int target) {
-        // Instructions:
-        // 1. If root is null, return false.
-        // 2. If root.val equals target, return true.
-        // 3. If target is smaller than root.val, search in the left subtree.
-        // 4. Otherwise, search in the right subtree.
+    // Instructions:
+    // 1. If root is null, return false.
+    // 2. If root.val equals target, return true.
+    // 3. If target is smaller than root.val, search in the left subtree.
+    // 4. Otherwise, search in the right subtree.
 
+    public static boolean searchBST(TreeNode root, int target) {
         // ADD CODE HERE
         if (root == null) {
             return false;
