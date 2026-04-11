@@ -1,4 +1,4 @@
-package Exam_4.Ej_prac.aborles_pdf;
+package Exam_4.Ej_prac.arborles_pdf;
 
 public class Exercise5_CountLeaves {
 

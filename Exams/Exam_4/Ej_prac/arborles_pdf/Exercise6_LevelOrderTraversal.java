@@ -1,4 +1,4 @@
-package Exam_4.Ej_prac.aborles_pdf;
+package Exam_4.Ej_prac.arborles_pdf;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
