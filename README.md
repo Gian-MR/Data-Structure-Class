@@ -1,28 +1,50 @@
-# Data Structures Practice
+# Data Structure Class Repository
 
-This repository contains my implementations and practice exercises from my **Data Structures** course. The goal of this repository is to document my progress while learning fundamental data structures and algorithms.
+This repository contains coursework, exam practice, and lab exercises for a Data Structures class using Java.
+
+## Repository Goals
+
+- Practice core data structures by solving many small problems.
+- Prepare for exams with topic-focused exercises.
+- Reinforce class concepts through lab wrappers and implementations.
 
 ## Topics Covered
 
-* Arrays
-* Linked Lists
-* Stacks
-* Queues
-* Trees
-* Graphs
-* Sorting Algorithms
-* Searching Algorithms
+### OOP Foundations
+- Classes and objects
+- Basic class interaction across files
+- Wrapper-style practice problems
 
-## Purpose
+### Arrays and Searching
+- Array traversal and filtering
+- Array-based problem solving
+- Searching in sorted matrices
+- Two-sum style lookup logic
 
-This repository serves as a personal learning log where I implement data structures from scratch, experiment with algorithms, and reinforce concepts learned in class.
+### Linked Lists
+- Singly linked lists
+- Doubly and circular doubly linked lists
+- Iteration and node-based operations
+- Reverse, cycle checks, and odd/even transforms
 
-##
+### Queues, Stacks, and Deques
+- Queue simulations and ticket problems
+- Stack-based validation and reversal problems
+- Deque basics and mixed queue/stack practice
 
-## Language
+### Sets and Hashing
+- HashSet uniqueness operations
+- HashMap counting and frequency tasks
+- Collision and bucket reasoning
 
-Most implementations in this repository are written in Java** as part of my coursework.**
+### Trees and BST
+- Node counting and height calculations
+- Inorder and level-order traversals
+- Search in BST and lowest common ancestor
+- Invert tree and level element/count operations
 
-## Notes
+## Language and Style
 
-This repository is intended for learning and experimentation. Code may evolve as I improve my understanding of data structures and algorithms.
+- Primary language: Java
+- Most files are standalone exercise files.
+- Many lab files are wrappers designed to test or run specific methods.
