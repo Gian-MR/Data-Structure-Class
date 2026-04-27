@@ -1,4 +1,4 @@
-package Exam_5.Ej_profe.Heaps;
+package Exam_5.Teoria.Heaps;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.PriorityQueue;
