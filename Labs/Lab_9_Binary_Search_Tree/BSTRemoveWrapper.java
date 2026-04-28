@@ -263,11 +263,94 @@ public class BSTRemoveWrapper {
             if (key == null)
                 throw new IllegalArgumentException();
             // ADD CODE HERE
-            return null;
+            BTNode<K, V> node = findNode(this.root, key);
+
+            if (node == null) {
+                return null;
+            }
+
+            Entry<K, V> removed = node.getValue();
+
+            if (node.getLeftChild() == null && node.getRightChild() == null) {
+                removeLeaf(node);
+            } else if (node.getLeftChild() == null || node.getRightChild() == null) {
+                removeOneChild(node);
+            } else {
+                removeTwoChildren(node);
+            }
+
+            this.size--;
+
+            return removed;
         }
 
         // Can add auxiliary methods here
+        private BTNode<K, V> findNode(BTNode<K, V> node, K key) {
+            if (node == null) {
+                return null;
+            }
 
+            int comparison = this.comp.compare(key, node.getValue().getKey());
+
+            if (comparison == 0) {
+                return node;
+            } else if (comparison < 0) {
+                return findNode(node.getLeftChild(), key);
+            } else {
+                return findNode(node.getRightChild(), key);
+            }
+        }
+        
+        private void removeLeaf(BTNode<K, V> node) {
+            if (node.getParent() == null) {
+                this.root = null;
+            } else if (node == node.getParent().getLeftChild()) {
+                node.getParent().setLeftChild(null);
+            } else {
+                node.getParent().setRightChild(null);
+            }
+        }
+
+        private void removeOneChild(BTNode<K, V> node) {
+            BTNode<K, V> child;
+
+            if (node.getLeftChild() != null) {
+                child = node.getLeftChild();
+            } else {
+                child = node.getRightChild();
+            }
+
+            if (node.getParent() == null) {
+                this.root = child;
+                child.setParent(null);
+            } else if (node == node.getParent().getLeftChild()) {
+                node.getParent().setLeftChild(child);
+                child.setParent(node.getParent());
+            } else {
+                node.getParent().setRightChild(child);
+                child.setParent(node.getParent());
+            }
+        }
+
+        private void removeTwoChildren(BTNode<K, V> node) {
+            BTNode<K, V> successor = smallestNode(node.getRightChild());
+
+            node.setValue(successor.getValue());
+
+            if (successor.getLeftChild() == null && successor.getRightChild() == null) {
+                removeLeaf(successor);
+            } else {
+                removeOneChild(successor);
+            }
+        }
+
+        private BTNode<K, V> smallestNode(BTNode<K, V> node) {
+            while (node.getLeftChild() != null) {
+                node = node.getLeftChild();
+            }
+
+            return node;
+        }
         /*
          * DO NOT EDIT. THIS IS FOR TESTING
          */
