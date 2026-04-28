@@ -734,6 +734,25 @@ public class SLToBSTWrapper {
      */
     public static BinarySearchTree<Integer, Integer> sortedListToBST(SinglyLinkedList<Integer> L) {
         // ADD CODE HERE
-        return null;
+        BinarySearchTree<Integer, Integer> tree = new BinarySearchTree<Integer, Integer>(new IntegerComparator());
+
+        sortedListToBSTHelper(L, tree, 0, L.size() - 1);
+
+        return tree;
+    }
+
+    private static void sortedListToBSTHelper(SinglyLinkedList<Integer> L, BinarySearchTree<Integer, Integer> tree, int start, int end) {
+
+        if (start > end) {
+            return;
+        }
+        int mid = (start + end) / 2;
+        int value = L.get(mid);
+
+        tree.put(value, value);
+
+
+        sortedListToBSTHelper(L, tree, start, mid - 1);
+        sortedListToBSTHelper(L, tree, mid + 1, end);
     }
 }
