@@ -213,7 +213,27 @@ public class MinAbsDifferenceWrapper {
     }
 
     public static int getMinimumDifference(BTNode<Integer, Integer> root) {
-        /* ADD YOUR CODE HER */
-        return -1;
+        /* ADD YOUR CODE HERE */
+        ArrayList<Integer> values = new ArrayList<>();
+        int min = Integer.MAX_VALUE;
+
+        inOrder(root,values);
+
+        for (int i = 1; i < values.size(); i++) {
+            int diff = values.get(i) - values.get(i - 1);
+            if (diff < min) {
+                min = diff;
+            }
+        }
+        return min;
     }
+
+    public static void inOrder(BTNode<Integer,Integer> node, List<Integer> values) {
+        if(node == null){
+            return;
+        }
+        inOrder(node.getLeftChild(), values);
+        values.add(node.getKey());
+        inOrder(node.getRightChild(), values);
+    }   
 }
