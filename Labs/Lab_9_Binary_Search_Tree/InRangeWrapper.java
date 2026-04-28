@@ -645,11 +645,26 @@ public class InRangeWrapper {
             ArrayList<KeyValuePair<K, V>> L = new ArrayList<KeyValuePair<K, V>>();
 
             // ADD YOUR CODE HERE
+            helper(this.root, key1, key2, L);
 
-            // REPLECE THIS WITH A VALID RETURN STATEMENT
-            return null;
+            return L;
         }
 
+        public void helper(BinaryTreeNode<MapEntry<K, V>> node, K key1, K key2, ArrayList<KeyValuePair<K, V>> L){
+           if (node == null){
+            return;
+           }
+
+           K currentKey = node.getValue().getKey();
+
+           if(this.keyComparator.compare(currentKey, key1) >= 0 && 
+              this.keyComparator.compare(currentKey, key2) < 0){
+                L.add(node.getValue());
+              }
+
+            helper(node.getLeftChild(), key1, key2, L);
+            helper(node.getRightChild(), key1, key2, L);
+        }
     }
 
 }
