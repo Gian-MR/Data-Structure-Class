@@ -1,7 +1,5 @@
 package Exam_5.Teoria.Heaps;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.PriorityQueue;
+import java.util.*;
 
 /**
  * Heap_Syntax_Methods
@@ -159,7 +157,7 @@ public class Heap_Syntax_Methods {
         System.out.println("PriorityQueue after poll: " + minPQ);
 
         // MaxHeap with PriorityQueue (reverse order comparator)
-        PriorityQueue<Integer> maxPQ = new PriorityQueue<>((a, b) -> b - a);
+        PriorityQueue<Integer> maxPQ = new PriorityQueue<>(java.util.Collections.reverseOrder());
         maxPQ.offer(9);
         maxPQ.offer(1);
         maxPQ.offer(6);
