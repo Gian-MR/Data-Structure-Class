@@ -17,3 +17,13 @@ public class ej_1{
         }
     }
 }
+// Ejercicio 1
+// Output:
+// 10
+// 20
+// 30
+// 40
+// 50
+//
+// Porque PriorityQueue<Integer> por defecto es un min-heap.
+// Eso significa que poll() elimina primero el número más pequeño.
