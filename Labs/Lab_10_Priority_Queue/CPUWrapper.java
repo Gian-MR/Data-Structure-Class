@@ -504,6 +504,45 @@ public class CPUWrapper {
      */
     public static int[] getProcessOrder(int[][] processes) {
         /* TODO ADD YOUR CODE HERE */
-        return null; // Dummy Return
+        int n = processes.length;
+        int[] order = new int[n];
+
+        int[][] indexedProcesses = new int[n][3];
+
+        for (int i = 0; i < n; i++) {
+            indexedProcesses[i][0] = processes[i][0];
+            indexedProcesses[i][1] = processes[i][1];
+            indexedProcesses[i][2] = i;
+        }
+
+        java.util.Arrays.sort(indexedProcesses, (a, b) -> Integer.compare(a[0], b[0]));
+
+        ListHeap<int[], Integer> heap = new ListHeap<>((a, b) -> {
+            if (a[0] != b[0]) {
+                return Integer.compare(a[0], b[0]); 
+            } else {
+                return Integer.compare(a[1], b[1]); 
+            }
+        });
+
+        int time = 0;
+        int i = 0;
+
+        for (int pos = 0; pos < n; pos++) {
+            if (heap.isEmpty() && time < indexedProcesses[i][0]) {
+                time = indexedProcesses[i][0];
+            }
+
+            while (i < n && indexedProcesses[i][0] <= time) {
+                heap.add(new int[] { indexedProcesses[i][1], indexedProcesses[i][2] }, pos);
+                i++;
+            }
+
+            Entry<int[], Integer> current = heap.removeMin();
+
+            order[pos] = current.getKey()[1];
+            time += current.getKey()[0];
+        }
+        return order;
     }
 }
