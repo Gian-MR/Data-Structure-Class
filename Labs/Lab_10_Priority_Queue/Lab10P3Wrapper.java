@@ -241,13 +241,12 @@ public class Lab10P3Wrapper {
 
         @Override
         public Entry<K, V> removeMin() {
-            int index = minEntryIndex();
-            if (index != -1)
-                return list.remove(index);
-            else
+            if (this.isEmpty())
                 return null;
-        }
 
+            int index = minEntryIndex();
+            return list.remove(index);
+        }
     }
 
     public static class UnsortedListPriorityQueue<K, V> extends AbstractListPriorityQueue<K, V> {
