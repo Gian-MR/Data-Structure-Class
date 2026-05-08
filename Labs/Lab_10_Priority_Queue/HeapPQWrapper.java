@@ -144,7 +144,7 @@ public class HeapPQWrapper {
             }
         }
 
-        @SuppressWarnings("unchecked")
+        //@SuppressWarnings("unchecked")
         public ArrayList(int initialCapacity) {
             if (initialCapacity < 1)
                 throw new IllegalArgumentException("Capacity must be at least 1.");
@@ -167,7 +167,7 @@ public class HeapPQWrapper {
             }
         }
 
-        @SuppressWarnings("unchecked")
+       // @SuppressWarnings("unchecked")
         private void reAllocate() {
             // create a new array with twice the size
             E newElements[] = (E[]) new Object[2 * this.elements.length];
@@ -339,7 +339,7 @@ public class HeapPQWrapper {
          * 
          * @param randomElements
          */
-        @SuppressWarnings("unchecked")
+       // @SuppressWarnings("unchecked")
         public ListHeap(List<Entry<K, V>> randomElements) {
             this.comparator = (k1, k2) -> ((Comparable<K>) k1).compareTo(k2);
             bottomUpHeapConstruction(randomElements);

@@ -161,14 +161,14 @@ public class Lab10P3Wrapper {
          *
          * @param <E> The data type of objects to be compared.
          */
-        private class DefaultComparator<E> implements Comparator<E> {
+        // private class DefaultComparator<E> implements Comparator<E> {
 
-            @SuppressWarnings("unchecked")
-            @Override
-            public int compare(E o1, E o2) throws ClassCastException {
-                return ((Comparable<E>) o1).compareTo(o2);
-            }
-        }
+        //     @SuppressWarnings("unchecked")
+        //     @Override
+        //     public int compare(E o1, E o2) throws ClassCastException {
+        //         return ((Comparable<E>) o1).compareTo(o2);
+        //     }
+        // }
 
         /**
          * Implementation of comparator of entries. The compare method bases its results

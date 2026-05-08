@@ -1,6 +1,6 @@
 package Labs.Lab_10_Priority_Queue;
 
-@SuppressWarnings({ "unchecked", "rawtypes" })
+//@SuppressWarnings({ "unchecked", "rawtypes" })
 public class HeapSortWrapper {
 
     /**
