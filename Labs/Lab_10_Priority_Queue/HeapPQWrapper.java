@@ -511,33 +511,37 @@ public class HeapPQWrapper {
          */
         private ListHeap<K, V> heap;
 
+        public HeapPriorityQueue(Comparator<K> comparator) {
+            this.heap = new ListHeap<>(comparator);
+        }
+
+        public HeapPriorityQueue() {
+            heap = new ListHeap<>((k1, k2) -> ((Comparable<K>) k1).compareTo(k2));
+        }
+
         @Override
         public int size() {
-            /* TODO ADD YOUR CODE HERE */
-            return -1; // Dummy Return
+            return heap.size(); 
         }
 
         @Override
         public boolean isEmpty() {
-            /* TODO ADD YOUR CODE HERE */
-            return false; // Dummy Return
+            return heap.isEmpty();
         }
 
         @Override
         public void insert(K key, V value) {
-            /* TODO ADD YOUR CODE HERE */
+            heap.add(key, value);
         }
 
         @Override
         public Entry<K, V> min() {
-            /* TODO ADD YOUR CODE HERE */
-            return null; // Dummy Return
+            return  heap.getMin();
         }
 
         @Override
         public Entry<K, V> removeMin() {
-            /* TODO ADD YOUR CODE HERE */
-            return null; // Dummy Return
+            return heap.removeMin();
         }
 
         @Override
