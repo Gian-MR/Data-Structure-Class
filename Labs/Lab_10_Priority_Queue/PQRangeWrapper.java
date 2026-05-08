@@ -228,10 +228,26 @@ public class PQRangeWrapper {
             // Create C, a copy of priority queue P
             HeapPriorityQueue<K, V> C = ((HeapPriorityQueue<K, V>) P).clone();
 
-            // ADD YOUR CODE HERE
+            boolean foundKey1 = false;
+            boolean foundKey2 = false;
 
-            // DUMMY REturn
-            return null;
+            while (!C.isEmpty() && !(foundKey1 && foundKey2)) {
+                Entry<K, V> entry = C.removeMin();
+                if (comp.compare(entry.getKey(), key1) == 0) {
+                    foundKey1 = true;
+                }
+                if (comp.compare(entry.getKey(), key2) == 0) {
+                    foundKey2 = true;
+                }
+                if (comp.compare(entry.getKey(), key1) >= 0 && comp.compare(entry.getKey(), key2) < 0) {
+                    L.add(entry);
+                }
+            }
+            if (foundKey1 && foundKey2) {
+                return L;
+            }
+
+            return new ArrayList<Entry<K, V>>();
         }
     }
 }
