@@ -175,5 +175,13 @@ public class BFSandDFSExample {
         System.out.println("DFS Order:        " + dfsIterOrder);
         System.out.println("\nBFS uses QUEUE (FIFO) - explores LEVEL by LEVEL");
         System.out.println("DFS uses STACK (LIFO) - explores DEEP first");
+
+        //!Ignore this code 
+        try {
+            System.out.println(graph.vertices);
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
     }
 }
