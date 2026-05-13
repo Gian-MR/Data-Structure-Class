@@ -9,18 +9,18 @@ public class Syntax {
 	     HashMap<KeyType, ValueType> map = new HashMap<>();
 	 
 	  ?2) Basic CRUD
-	     map.put(key, value);           // add or replace value for key
-	     map.get(key);                  // returns value or null if not found
-	     map.getOrDefault(key, def);    // value if exists, else def
-	     map.remove(key);               // remove by key
-	     map.remove(key, value);        // remove only if key maps to value
+	     map.put(key, value);           			// add or replace value for key
+	     map.get(key);                  			// returns value or null if not found
+	     map.getOrDefault(key, def);    			// value if exists, else def
+	     map.remove(key);              			    // remove by key
+	     map.remove(key, value);        			// remove only if key maps to value
 	 
 	  ?3) Checks + size
-	     map.containsKey(key);          // true if key exists
-	     map.containsValue(value);      // true if value exists
-	     map.size();                    // number of pairs
-	     map.isEmpty();                 // true if no pairs
-	     map.clear();                   // remove all entries
+	     map.containsKey(key);          			// true if key exists
+	     map.containsValue(value);      			// true if value exists
+	     map.size();                    			// number of pairs
+	     map.isEmpty();                 			// true if no pairs
+	     map.clear();                   			// remove all entries
 	 
 	  ?4) Replace/update helpers
 	     map.replace(key, newValue);                // replace if key exists
